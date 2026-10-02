@@ -1,0 +1,8 @@
+bin/
+obj/
+.vs/
+*.user
+TestResults/
+*.nupkg
+.dotnet/
+agent-tools/

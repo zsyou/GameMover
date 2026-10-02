@@ -1,0 +1,7 @@
+Id: GameMover_c4e8a1d2-7b36-4f90-9a55-1e6d3c8b47f2
+Name: GameMover
+Author: GameMover
+Version: 1.0.0
+Module: GameMover.dll
+Type: GenericPlugin
+Icon: icon.png

@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/GameMover/GameMover.csproj" />
+  <Project Path="tests/GameMover.Tests/GameMover.Tests.csproj" />
+</Solution>
