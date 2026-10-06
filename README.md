@@ -7,6 +7,7 @@ Playnite 桌面版通用插件。把**手动添加**的游戏安装目录迁到�
 ## 功能
 
 - 游戏右键菜单 **GameMover**：
+  - 当前安装路径（没有安装目录时显示 `(no install directory)`）
   - **Move Game...**
   - **Move to {库名称}**（设置里保存过的库会逐个出现，打开对话框并预选目标）
   - **Manage Libraries...**（打开插件设置）
@@ -23,18 +24,14 @@ Playnite 桌面版通用插件。把**手动添加**的游戏安装目录迁到�
 
 ## 安装
 
-需要 Windows 上的 **Playnite 10 桌面模式**。本仓库里的 `.pext` 是在 Linux 上用 .NET SDK 交叉编译出来的，还没有在真实 Playnite 进程里加载过。
+需要 Windows 上的 **Playnite 10 桌面模式**。
 
-任选一种方式：
+1. 下载 `artifacts/GameMover_1.0.0.pext`。
+2. 在 Playnite 里安装这个扩展包：双击 `.pext`，或使用 Playnite 的扩展安装器。
+3. 重启 Playnite。
+4. 在扩展列表里确认 GameMover 已启用。
 
-1. 双击 `artifacts/GameMover_1.0.0.pext`，或在 Playnite 里安装该扩展包，然后按提示重启。
-2. 把 `src/GameMover/bin/Release/net462` 里的 `extension.yaml`、`GameMover.dll`、`icon.png`、`Localization` 复制到  
-   `%AppData%\Playnite\Extensions\GameMover\`  
-   不要把 `Playnite.SDK.dll` 放进这个目录。
-3. 开发时：Playnite **设置 → For developers → External extensions**，加入  
-   `src\GameMover\bin\Release\net462`。
-
-重启后在扩展列表里确认 GameMover 已启用。
+开发时如果要直接加载编译输出，可以在 Playnite **设置 → For developers → External extensions** 里加入 `src\GameMover\bin\Release\net462`。这不是普通安装方式。不要把 `Playnite.SDK.dll` 放进扩展目录。
 
 ## 使用
 
