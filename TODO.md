@@ -5,6 +5,7 @@
 - 对照官方文档、Toolbox GenericPlugin 模板（master，PlayniteSDK 6.17.0）和 `Playnite.SDK.dll` 元数据实现插件，没有自造 API。
 - 插件骨架：`GameMoverPlugin : GenericPlugin`、`extension.yaml`（`Type: GenericPlugin`）、设置页、`HasSettings = true`。
 - 游戏菜单 `GameMover`：Move Game...、Move to {库}、Manage Libraries...（`MenuSection` 用官方的 `|` 分段规则；这里只用一层）。
+- 同一子菜单顶部显示当前安装路径（`Install directory: …`）。`InstallDirectory` 为空、空白或没有选中游戏时显示 `(no install directory)`，多选时显示 `(multiple games)`。该项不设置 `Action`；后面跟官方分隔线 `Description = "-"`。全局搜索会直接调用 `Action`，因此 `IsGlobalSearchRequest` 时不加这两项。路径中的 `_` 写成 `__`，避免被菜单访问键吃掉。
 - 移动对话框：游戏名、当前安装目录、库选择 / Browse、目标预览、进度、取消。
 - 多库设置：添加 / 编辑 / 删除，`LoadPluginSettings` / `SavePluginSettings`，`Serialization.GetClone` 支持取消编辑。
 - 预检查：空目录、源不存在、库无效、源等于目标、嵌套路径、目标已存在、剩余空间、Playnite 运行标志 + 安装目录内进程。
@@ -12,7 +13,7 @@
 - `PathRewriteService.RewritePath`：大小写、尾部斜杠、兄弟目录前缀、引号、环境变量、相对路径、`{InstallDir}`、`\\?\`。
 - 外部库游戏：`Game.IsCustomGame`（源码定义为 `PluginId == Guid.Empty`）为 false 时拒绝，并用 `Addons.Plugins` 里的 `LibraryPlugin.Name` 组成提示。
 - Release 编译通过，输出不含 `Playnite.SDK.dll`。`artifacts/GameMover_1.0.0.pext` 已打包。
-- 单元测试 23 项通过（路径、进程边界、复制、取消、目标已存在、空间不足、校验失败不删源、成功后删源）。
+- 单元测试 30 项通过（路径、进程边界、复制、取消、目标已存在、空间不足、校验失败不删源、成功后删源、菜单安装路径文案）。
 
 ## 未完成 / 风险
 
@@ -30,7 +31,7 @@
 - 包名是 nuget.org 上的 `PlayniteSDK`，不是 Playnite 11 feed 上的 `Playnite.SDK` 11.0.0-alpha。
 - 插件类继承 `Playnite.SDK.Plugins.GenericPlugin`，构造函数 `(IPlayniteAPI)`，必须实现 `Guid Id`。
 - `Properties = new GenericPluginProperties { HasSettings = true }`。
-- 菜单：`GetGameMenuItems(GetGameMenuItemsArgs)`，项类型 `GameMenuItem`，`Action` 收到 `GameMenuItemActionArgs.Games`。子菜单用 `MenuSection`，嵌套用 `|`。
+- 菜单：`GetGameMenuItems(GetGameMenuItemsArgs)`，项类型 `GameMenuItem`，`Action` 收到 `GameMenuItemActionArgs.Games`。子菜单用 `MenuSection`，嵌套用 `|`。`GameMenuItem` 没有 `IsEnabled`。桌面 `GameMenu` 仅在 `Action != null` 时绑定点击；`Description == "-"` 是分隔线。全局搜索（`IsGlobalSearchRequest`）会跳过分隔线并调用 `Action`，空 `Action` 会空引用。
 - 设置：`GetSettings` 返回 `ISettings`，`GetSettingsView` 返回 WPF `UserControl`。保存用 `LoadPluginSettings<T>` / `SavePluginSettings`。克隆用 `Playnite.SDK.Data.Serialization.GetClone`。
 - 忽略序列化的属性用 `[DontSerialize]`（`Playnite.SDK.Data`）。
 - 日志：模板使用 `LogManager.GetLogger()`。`IPlayniteAPI` 上没有 `CreateLogger()`。

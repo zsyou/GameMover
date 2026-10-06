@@ -45,6 +45,24 @@ namespace GameMover
 
         public override IEnumerable<GameMenuItem> GetGameMenuItems(GetGameMenuItemsArgs args)
         {
+            // Context submenu only. Global search invokes Action for every non-separator item
+            // (MenuItems.GetSearchGameMenuItems). SDK 6.17 has no IsEnabled; GameMenu attaches
+            // Click only when Action is set, and Description "-" is the documented separator.
+            if (args == null || !args.IsGlobalSearchRequest)
+            {
+                yield return new GameMenuItem
+                {
+                    Description = DescribeCurrentInstallDirectory(args?.Games),
+                    MenuSection = "GameMover"
+                };
+
+                yield return new GameMenuItem
+                {
+                    Description = "-",
+                    MenuSection = "GameMover"
+                };
+            }
+
             yield return new GameMenuItem
             {
                 Description = "Move Game...",
@@ -74,6 +92,16 @@ namespace GameMover
                 MenuSection = "GameMover",
                 Action = _ => PlayniteApi.MainView.OpenPluginSettings(Id)
             };
+        }
+
+        private static string DescribeCurrentInstallDirectory(IList<Game>? games)
+        {
+            if (games == null || games.Count != 1 || games[0] == null)
+            {
+                return InstallDirectoryMenuText.FormatMenuLabel(games?.Count ?? 0, null);
+            }
+
+            return InstallDirectoryMenuText.FormatMenuLabel(1, games[0].InstallDirectory);
         }
 
         public override ISettings GetSettings(bool firstRunSettings)
