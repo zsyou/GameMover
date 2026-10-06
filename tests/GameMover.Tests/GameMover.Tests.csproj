@@ -26,6 +26,7 @@
     <Compile Include="..\..\src\GameMover\Services\GameMoveService.cs" Link="Linked\GameMoveService.cs" />
     <Compile Include="..\..\src\GameMover\Services\GameProcessService.cs" Link="Linked\GameProcessService.cs" />
     <Compile Include="..\..\src\GameMover\Services\IMoveLog.cs" Link="Linked\IMoveLog.cs" />
+    <Compile Include="..\..\src\GameMover\Services\InstallDirectoryMenuText.cs" Link="Linked\InstallDirectoryMenuText.cs" />
     <Compile Include="..\..\src\GameMover\Services\PathRewriteService.cs" Link="Linked\PathRewriteService.cs" />
     <Compile Include="..\..\src\GameMover\Services\VerificationService.cs" Link="Linked\VerificationService.cs" />
   </ItemGroup>
